@@ -4,6 +4,10 @@ Personal portfolio site for **Shaikh Abdul Raheman Gaffar** — Full-Stack & Fro
 
 Built with **raw HTML, CSS & JavaScript** — no frameworks were harmed.
 
+## Live
+
+Deployed on Vercel: **https://portfolio-sarg.vercel.app**
+
 ## Features
 
 - Custom target cursor (`TargetCursor` from React Bits, ported to vanilla JS + GSAP)
