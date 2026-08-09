@@ -653,25 +653,124 @@
       transform: scaleX(1);
     }
 
-    /* ── PROJECTS ───────────────────────────────────── */
-    .projects-grid {
+    /* ── PROJECTS (CardSwap stack) ──────────────────── */
+    .projects-layout {
       margin-top: 4rem;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1px;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .projects-sub {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--dim);
+      max-width: 36ch;
+      margin-bottom: 2.5rem;
+    }
+    .projects-sub strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .projects-counter {
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .projects-counter__cur {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--red);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .projects-counter__sep {
+      font-size: 1.2rem;
+      color: var(--border);
+    }
+    .projects-counter__total {
+      font-size: 1.2rem;
+      color: var(--dim);
+    }
+
+    .projects-nav {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .projects-nav-btn {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
       border: 1px solid var(--border);
+      padding: 0.7rem 1.4rem;
+      transition: color 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .projects-nav-btn:hover {
+      color: var(--red);
+      border-color: var(--red);
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(255, 45, 0, 0.2);
     }
 
-    .project-card {
+    .projects-stage {
       position: relative;
-      background: var(--off);
-      overflow: hidden;
-      cursor: crosshair;
-      transition: background 0.25s;
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .project-card:hover {
-      background: #161616;
+    .card-swap-container {
+      position: relative;
+      width: 460px;
+      height: 560px;
+      perspective: 900px;
+      overflow: visible;
+    }
+
+    .swap-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 460px;
+      height: 560px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--off);
+      transform-style: preserve-3d;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .swap-card:hover {
+      border-color: var(--red);
+    }
+    .swap-card .project-card__thumb {
+      flex: none;
+    }
+    .swap-card .project-card__body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .swap-card .project-desc {
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+    .swap-card .project-footer {
+      margin-top: auto;
     }
 
     /* placeholder image */
@@ -1105,8 +1204,23 @@
         gap: 3rem;
       }
 
-      .projects-grid {
+      .projects-layout {
         grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .projects-stage {
+        min-height: 460px;
+      }
+
+      .card-swap-container {
+        width: 340px;
+        height: 430px;
+      }
+
+      .swap-card {
+        width: 340px;
+        height: 430px;
       }
 
       .contact-form {
@@ -1138,6 +1252,18 @@
 
       footer {
         padding: 1.5rem 1.25rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-swap-container {
+        width: 300px;
+        height: 400px;
+      }
+
+      .swap-card {
+        width: 300px;
+        height: 400px;
       }
     }
 
@@ -1389,245 +1515,265 @@
     <div class="s-label">03 / Projects</div>
     <h2 class="s-title">Things I've <em>Built</em></h2>
 
-    <div class="projects-grid">
-
-      <!-- 01 Kickforge -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/Cleveroad.jpg" alt="Kickforge" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
-          </div>
+    <div class="projects-layout">
+      <div class="projects-info reveal">
+        <p class="projects-sub">
+          A rotating deck of my work — <strong>hover to pause</strong>, click any card to open it
+          live, or flip with the arrows.
+        </p>
+        <div class="projects-counter">
+          <span class="projects-counter__cur" id="swap-current">01</span>
+          <span class="projects-counter__sep">/</span>
+          <span class="projects-counter__total" id="swap-total">08</span>
         </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_01</span>
-            <span class="project-tag">Web App</span>
-          </div>
-          <div class="project-name">Kickforge</div>
-          <div class="project-desc">A sleek web app — bold product-forward design with clean layout and smooth user
-            experience.</div>
-          <div class="project-footer">
-            <span class="project-stack">HTML · CSS · JS</span>
-            <a href="https://kickforge-xi.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
-          </div>
+        <div class="projects-nav">
+          <button type="button" class="projects-nav-btn" id="swap-prev" aria-label="Previous project">← Prev</button>
+          <button type="button" class="projects-nav-btn" id="swap-next" aria-label="Next project">Next →</button>
         </div>
       </div>
 
-      <!-- 02 Weather Forecast -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/Weather Forecast Dashboard.jpg" alt="Weather Forecast" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
+      <div class="projects-stage reveal">
+        <div class="card-swap-container" id="card-swap">
+
+          <!-- 01 Kickforge -->
+          <div class="card swap-card" data-link="https://kickforge-xi.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/Cleveroad.jpg" alt="Kickforge" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_01</span>
+                <span class="project-tag">Web App</span>
+              </div>
+              <div class="project-name">Kickforge</div>
+              <div class="project-desc">A sleek web app — bold product-forward design with clean layout and smooth user
+                experience.</div>
+              <div class="project-footer">
+                <span class="project-stack">HTML · CSS · JS</span>
+                <a href="https://kickforge-xi.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_02</span>
-            <span class="project-tag">Dashboard</span>
+
+          <!-- 02 Weather Forecast -->
+          <div class="card swap-card" data-link="https://forecast-steel-theta.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/Weather Forecast Dashboard.jpg" alt="Weather Forecast" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_02</span>
+                <span class="project-tag">Dashboard</span>
+              </div>
+              <div class="project-name">Weather Forecast</div>
+              <div class="project-desc">A live weather dashboard with real-time data, dynamic UI, and clean data
+                visualisation.</div>
+              <div class="project-footer">
+                <span class="project-stack">HTML · CSS · JS · API</span>
+                <a href="https://forecast-steel-theta.vercel.app" target="_blank" rel="noopener" class="project-link">Live
+                  ↗</a>
+              </div>
+            </div>
           </div>
-          <div class="project-name">Weather Forecast</div>
-          <div class="project-desc">A live weather dashboard with real-time data, dynamic UI, and clean data
-            visualisation.</div>
-          <div class="project-footer">
-            <span class="project-stack">HTML · CSS · JS · API</span>
-            <a href="https://forecast-steel-theta.vercel.app" target="_blank" rel="noopener" class="project-link">Live
-              ↗</a>
+
+          <!-- 03 Watch E-Commerce -->
+          <div class="card swap-card" data-link="https://tempus-gold.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/watch e-comrece .jpg" alt="Watch E-Commerce" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_03</span>
+                <span class="project-tag">E-Commerce</span>
+              </div>
+              <div class="project-name">TEMPUS — Watch Store</div>
+              <div class="project-desc">Luxury watch e-commerce with dark minimalist aesthetic, full product catalogue
+                and smooth checkout flow.</div>
+              <div class="project-footer">
+                <span class="project-stack">Next.js · Tailwind · JS</span>
+                <a href="https://tempus-gold.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
+              </div>
+            </div>
           </div>
+
+          <!-- 04 Game Dashboard -->
+          <div class="card swap-card" data-link="https://nexus-dashboard-tr52.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/Game Dashboard Design.jpg" alt="Game Dashboard" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_04</span>
+                <span class="project-tag">Dashboard</span>
+              </div>
+              <div class="project-name">NEXUS — Game Dashboard</div>
+              <div class="project-desc">PC gaming dashboard with strict black/grey palette, animated task cards and
+                real-time stats layout.</div>
+              <div class="project-footer">
+                <span class="project-stack">HTML · CSS · JS</span>
+                <a href="https://nexus-dashboard-tr52.vercel.app" target="_blank" rel="noopener" class="project-link">Live
+                  ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 05 Paints Web App -->
+          <div class="card swap-card" data-link="https://ar-paint-psi.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/WordPress dashboard design concept.jpg"
+                alt="Paints Web App" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_05</span>
+                <span class="project-tag">Web App</span>
+              </div>
+              <div class="project-name">AR Paints</div>
+              <div class="project-desc">A paints & colour web application — interactive colour picker, product showcase
+                and clean UI.</div>
+              <div class="project-footer">
+                <span class="project-stack">HTML · CSS · JS</span>
+                <a href="https://ar-paint-psi.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 06 Aureon -->
+          <div class="card swap-card" data-link="https://aureon-hafz4jrou-luffy6.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/Task manager app.jpg" alt="Aureon" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_06</span>
+                <span class="project-tag">Productivity</span>
+              </div>
+              <div class="project-name">Aureon</div>
+              <div class="project-desc">A productivity and task manager app — dark theme, animated cards, intelligent
+                workflow design.</div>
+              <div class="project-footer">
+                <span class="project-stack">HTML · CSS · JS</span>
+                <a href="https://aureon-hafz4jrou-luffy6.vercel.app" target="_blank" rel="noopener"
+                  class="project-link">Live ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 07 Portfolio -->
+          <div class="card swap-card" data-link="https://portofolio3-chi.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/portfolio .jpg" alt="Portfolio" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_07</span>
+                <span class="project-tag">Portfolio</span>
+              </div>
+              <div class="project-name">Portfolio v1</div>
+              <div class="project-desc">Previous personal portfolio site — showcasing projects, skills and services with
+                clean design.</div>
+              <div class="project-footer">
+                <span class="project-stack">HTML · CSS · JS</span>
+                <a href="https://portofolio3-chi.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 08 News Analyzer -->
+          <div class="card swap-card" data-link="https://news-website-luffy6.vercel.app">
+            <div class="project-card__thumb">
+              <img src="https://portofolio3-chi.vercel.app/images/news analyzer .jpg" alt="News Analyzer" />
+              <div class="project-card__ph">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
+                  <rect x="4" y="4" width="32" height="32" rx="1" />
+                  <line x1="4" y1="28" x2="36" y2="28" />
+                  <circle cx="12" cy="16" r="4" />
+                  <polyline points="20,28 28,16 36,28" />
+                </svg>
+                <span class="project-card__ph-label">Image Placeholder</span>
+              </div>
+            </div>
+            <div class="project-card__body">
+              <div class="project-card__meta">
+                <span class="project-num">PRJ_08</span>
+                <span class="project-tag">News</span>
+              </div>
+              <div class="project-name">News Analyzer</div>
+              <div class="project-desc">A dark-themed news website with skeleton loaders, live feeds and smart article
+                categorisation.</div>
+              <div class="project-footer">
+                <span class="project-stack">HTML · CSS · JS · API</span>
+                <a href="https://news-website-luffy6.vercel.app" target="_blank" rel="noopener" class="project-link">Live
+                  ↗</a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-
-      <!-- 03 Watch E-Commerce -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/watch e-comrece .jpg" alt="Watch E-Commerce" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
-          </div>
-        </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_03</span>
-            <span class="project-tag">E-Commerce</span>
-          </div>
-          <div class="project-name">TEMPUS — Watch Store</div>
-          <div class="project-desc">Luxury watch e-commerce with dark minimalist aesthetic, full product catalogue and
-            smooth checkout flow.</div>
-          <div class="project-footer">
-            <span class="project-stack">Next.js · Tailwind · JS</span>
-            <a href="https://tempus-gold.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 04 Game Dashboard -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/Game Dashboard Design.jpg" alt="Game Dashboard" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
-          </div>
-        </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_04</span>
-            <span class="project-tag">Dashboard</span>
-          </div>
-          <div class="project-name">NEXUS — Game Dashboard</div>
-          <div class="project-desc">PC gaming dashboard with strict black/grey palette, animated task cards and
-            real-time stats layout.</div>
-          <div class="project-footer">
-            <span class="project-stack">HTML · CSS · JS</span>
-            <a href="https://nexus-dashboard-tr52.vercel.app" target="_blank" rel="noopener" class="project-link">Live
-              ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 05 Paints Web App -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/WordPress dashboard design concept.jpg"
-            alt="Paints Web App" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
-          </div>
-        </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_05</span>
-            <span class="project-tag">Web App</span>
-          </div>
-          <div class="project-name">AR Paints</div>
-          <div class="project-desc">A paints & colour web application — interactive colour picker, product showcase and
-            clean UI.</div>
-          <div class="project-footer">
-            <span class="project-stack">HTML · CSS · JS</span>
-            <a href="https://ar-paint-psi.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 06 Aureon -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/Task manager app.jpg" alt="Aureon" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
-          </div>
-        </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_06</span>
-            <span class="project-tag">Productivity</span>
-          </div>
-          <div class="project-name">Aureon</div>
-          <div class="project-desc">A productivity and task manager app — dark theme, animated cards, intelligent
-            workflow design.</div>
-          <div class="project-footer">
-            <span class="project-stack">HTML · CSS · JS</span>
-            <a href="https://aureon-hafz4jrou-luffy6.vercel.app" target="_blank" rel="noopener"
-              class="project-link">Live ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 07 Portfolio -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/portfolio .jpg" alt="Portfolio" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
-          </div>
-        </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_07</span>
-            <span class="project-tag">Portfolio</span>
-          </div>
-          <div class="project-name">Portfolio v1</div>
-          <div class="project-desc">Previous personal portfolio site — showcasing projects, skills and services with
-            clean design.</div>
-          <div class="project-footer">
-            <span class="project-stack">HTML · CSS · JS</span>
-            <a href="https://portofolio3-chi.vercel.app" target="_blank" rel="noopener" class="project-link">Live ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 08 News Analyzer -->
-      <div class="project-card reveal">
-        <div class="project-card__thumb">
-          <img src="https://portofolio3-chi.vercel.app/images/news analyzer .jpg" alt="News Analyzer" />
-          <div class="project-card__ph">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#222" stroke-width="1">
-              <rect x="4" y="4" width="32" height="32" rx="1" />
-              <line x1="4" y1="28" x2="36" y2="28" />
-              <circle cx="12" cy="16" r="4" />
-              <polyline points="20,28 28,16 36,28" />
-            </svg>
-            <span class="project-card__ph-label">Image Placeholder</span>
-          </div>
-        </div>
-        <div class="project-card__body">
-          <div class="project-card__meta">
-            <span class="project-num">PRJ_08</span>
-            <span class="project-tag">News</span>
-          </div>
-          <div class="project-name">News Analyzer</div>
-          <div class="project-desc">A dark-themed news website with skeleton loaders, live feeds and smart article
-            categorisation.</div>
-          <div class="project-footer">
-            <span class="project-stack">HTML · CSS · JS · API</span>
-            <a href="https://news-website-luffy6.vercel.app" target="_blank" rel="noopener" class="project-link">Live
-              ↗</a>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -1861,8 +2007,8 @@
     (function () {
       if (!window.gsap) return;
 
-      const targetSelector =
-        '.btn, .project-card, .contact-link, .contact-big a, .form-submit, .nav__links a, .skill-block, .hero__photo-frame';
+    const targetSelector =
+      '.btn, .project-card, .swap-card, .contact-link, .contact-big a, .form-submit, .nav__links a, .skill-block, .hero__photo-frame';
       const spinDuration = 2;
       const hoverDuration = 0.2;
       const parallaxOn = true;
@@ -2091,11 +2237,160 @@
 
       window.addEventListener('mouseover', enterHandler, { passive: true });
 
-      window.addEventListener('resize', () => {
-        containingBlock = getContainingBlock(cursor);
+    window.addEventListener('resize', () => {
+      containingBlock = getContainingBlock(cursor);
+    });
+  })();
+
+  /* ── CardSwap — React Bits port (vanilla JS + GSAP) ── */
+  (function () {
+    const container = document.getElementById('card-swap');
+    if (!container || !window.gsap) return;
+
+    const cards = Array.from(container.querySelectorAll('.swap-card'));
+    const total = cards.length;
+    if (total < 2) return;
+
+    const cardDistance = 60;
+    const verticalDistance = 70;
+    const delay = 3500;
+    const pauseOnHover = true;
+    const skewAmount = 4;
+    const config = {
+      ease: 'elastic.out(0.6,0.9)',
+      durDrop: 2,
+      durMove: 2,
+      durReturn: 2,
+      promoteOverlap: 0.9,
+      returnDelay: 0.05
+    };
+
+    const makeSlot = (i, distX, distY, n) => ({
+      x: i * distX,
+      y: -i * distY,
+      z: -i * distX * 1.5,
+      zIndex: n - i
+    });
+
+    const placeNow = (el, slot, skew) =>
+      gsap.set(el, {
+        x: slot.x,
+        y: slot.y,
+        z: slot.z,
+        xPercent: -50,
+        yPercent: -50,
+        skewY: skew,
+        transformOrigin: 'center center',
+        zIndex: slot.zIndex,
+        force3D: true
       });
-    })();
-  </script>
+
+    const order = Array.from({ length: total }, (_, i) => i);
+    let tl = null;
+    let interval = null;
+
+    const curEl = document.getElementById('swap-current');
+    const totalEl = document.getElementById('swap-total');
+    if (totalEl) totalEl.textContent = String(total).padStart(2, '0');
+
+    const renderOrder = () => {
+      if (curEl) curEl.textContent = String(order[0] + 1).padStart(2, '0');
+    };
+
+    const swap = () => {
+      if (order.length < 2) return;
+      const front = order.shift();
+      const elFront = cards[front];
+      const t = gsap.timeline();
+      tl = t;
+
+      t.to(elFront, { y: '+=500', duration: config.durDrop, ease: config.ease });
+
+      t.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
+      order.forEach((idx, i) => {
+        const el = cards[idx];
+        const slot = makeSlot(i, cardDistance, verticalDistance, total);
+        t.set(el, { zIndex: slot.zIndex }, 'promote');
+        t.to(el, { x: slot.x, y: slot.y, z: slot.z, duration: config.durMove, ease: config.ease }, `promote+=${i * 0.15}`);
+      });
+
+      const backSlot = makeSlot(total - 1, cardDistance, verticalDistance, total);
+      t.addLabel('return', `promote+=${config.durMove * config.returnDelay}`);
+      t.call(() => {
+        gsap.set(elFront, { zIndex: backSlot.zIndex });
+      }, undefined, 'return');
+      t.to(elFront, { x: backSlot.x, y: backSlot.y, z: backSlot.z, duration: config.durReturn, ease: config.ease }, 'return');
+      t.call(() => {
+        order.push(front);
+        renderOrder();
+      });
+    };
+
+    cards.forEach((c, i) => placeNow(c, makeSlot(i, cardDistance, verticalDistance, total), skewAmount));
+    renderOrder();
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    swap();
+    if (!reduced) interval = setInterval(swap, delay);
+
+    if (pauseOnHover && !reduced) {
+      const pause = () => {
+        if (tl) tl.pause();
+        clearInterval(interval);
+      };
+      const resume = () => {
+        if (tl) tl.play();
+        interval = setInterval(swap, delay);
+      };
+      container.addEventListener('mouseenter', pause);
+      container.addEventListener('mouseleave', resume);
+    }
+
+    const goNext = () => {
+      if (reduced) return;
+      clearInterval(interval);
+      if (tl) tl.progress(1);
+      swap();
+      interval = setInterval(swap, delay);
+    };
+
+    const goPrev = () => {
+      if (reduced) return;
+      clearInterval(interval);
+      if (tl) tl.progress(1);
+      const back = order.pop();
+      const elBack = cards[back];
+      const t = gsap.timeline();
+      tl = t;
+      order.forEach((idx, i) => {
+        const el = cards[idx];
+        const slot = makeSlot(i + 1, cardDistance, verticalDistance, total);
+        t.to(el, { x: slot.x, y: slot.y, z: slot.z, zIndex: slot.zIndex, duration: config.durMove, ease: config.ease }, i * 0.12);
+      });
+      const frontSlot = makeSlot(0, cardDistance, verticalDistance, total);
+      t.set(elBack, { zIndex: frontSlot.zIndex }, 0.1);
+      t.to(elBack, { x: frontSlot.x, y: frontSlot.y, z: frontSlot.z, duration: config.durReturn, ease: config.ease }, 0.15);
+      t.call(() => {
+        order.unshift(back);
+        renderOrder();
+      });
+      interval = setInterval(swap, delay);
+    };
+
+    const nextBtn = document.getElementById('swap-next');
+    const prevBtn = document.getElementById('swap-prev');
+    if (nextBtn) nextBtn.addEventListener('click', goNext);
+    if (prevBtn) prevBtn.addEventListener('click', goPrev);
+
+    cards.forEach(c => {
+      c.addEventListener('click', e => {
+        if (e.target.closest('a')) return;
+        const link = c.dataset.link;
+        if (link) window.open(link, '_blank', 'noopener');
+      });
+    });
+  })();
+</script>
 </body>
 
 </html>
