@@ -31,6 +31,6 @@ Just open index.html in a browser � no build step, no dependencies.
 
 ## Contact
 
-- Email: shaikhraheman@gmail.com
+- Email: shaikhraheman295ltr@gmail.com
 - GitHub / LinkedIn / Instagram � linked on the site
 
