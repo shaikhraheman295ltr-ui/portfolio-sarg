@@ -1,36 +1,52 @@
-# AR.DEV � Portfolio
+# AR.DEV — Portfolio
 
-Personal portfolio site for **Shaikh Abdul Raheman Gaffar** � Full-Stack & Frontend Developer.
+> **🔴 Live demo:** [https://portfolio-sarg.vercel.app](https://portfolio-sarg.vercel.app)
 
-Built with **raw HTML, CSS & JavaScript** � no frameworks were harmed.
+Personal portfolio of **Shaikh Abdul Raheman Gaffar** — Full-Stack & Frontend Developer, 2nd-year CS student at COCSIT Latur, shipping real things beyond the curriculum.
 
-## Live
+Built with **raw HTML, CSS & JavaScript** — no frameworks, no build step, no dependencies to install.
 
-Deployed on Vercel: **https://portfolio-sarg.vercel.app**
+## ✨ Highlights
 
-## Features
+- **Brutalist design system** — pure `#000` canvas, 3px solid borders, zero border-radius, hard offset shadows, one saturated red (`#FF2D00`)
+- **CardSwap project deck** — 3D rotating cards (React Bits port, vanilla JS + GSAP), hover-to-pause, prev/next, click-to-open live links
+- **AccordionGallery services** — tilt/parallax panels with grayscale-to-color active state (React Bits port)
+- **TargetCursor** — corner-bracket custom cursor that locks onto interactive elements (desktop only, auto-disabled on touch)
+- **WebGL "light pillar" background** — raymarched shader (Three.js) with automatic quality tiers for low-end devices & phones
+- **Typewriter role line**, scroll-reveal sections, animated skill bars
+- **Working contact form** via FormSubmit (free, no IP restrictions)
+- **Accessibility first** — WCAG AA contrast, `:focus-visible` keyboard rings, full `prefers-reduced-motion` support
+- **Responsive** — mobile burger drawer nav, tuned breakpoints at 768px / 520px / 480px
 
-- Custom target cursor (TargetCursor from React Bits, ported to vanilla JS + GSAP)
-- Typewriter hero role animation
-- Scroll-reveal animations & animated skill bars
-- Fully responsive layout with mobile drawer navigation
-- Working contact form via FormSubmit (free, no IP restrictions)
-- prefers-reduced-motion and touch-device friendly
+## 🗺 Sections
 
-## Sections
+Home (hero + portrait) · About · Skills · Services · Projects · Contact
 
-- Home / Intro (with portrait)
-- About
-- Skills
-- Projects
-- Contact
+## 📁 Structure
 
-## Run locally
+```
+index.html            markup only — sections, cards, form
+css/styles.css        full brutalist theme (tokens → components → responsive)
+js/main.js            typewriter, nav/drawer, scroll reveals, contact form
+js/gsap-effects.js    TargetCursor + CardSwap + AccordionGallery
+js/lightpillar.js     Three.js WebGL background
+image/                project thumbnails & service SVGs
+```
 
-Just open index.html in a browser � no build step, no dependencies.
+Load order matters: `main.js` → GSAP (CDN) → `gsap-effects.js` → Three.js (CDN) → `lightpillar.js`.
 
-## Contact
+## 🛠 Run locally
 
-- Email: shaikhraheman295ltr@gmail.com
-- GitHub / LinkedIn / Instagram � linked on the site
+Open `index.html` in any browser — that's it. No install, no build.
 
+## 🚀 Deploy
+
+Auto-deploys to **Vercel** on every push to `main` (project: `portfolio-sarg`).
+
+First-time setup only requires `vercel link` — the `.vercel/project.json` bindings are gitignored.
+
+## 📬 Contact
+
+- **Email:** shaikhraheman295ltr@gmail.com
+- **GitHub:** [shaikhraheman295ltr-ui](https://github.com/shaikhraheman295ltr-ui)
+- **LinkedIn / Instagram** — linked on the site
